@@ -1,23 +1,40 @@
-import { Component } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { RadioOptionComponent } from "../../shared/components/radio-option/radio-option.component";
+import { ButtonComponent } from '../../shared/components/button/button.component';
+import { ExperienceLevelComponent } from "../../shared/components/experience-level/experience-level.component";
+import { Router } from '@angular/router';
+import { CadastroService } from '../../shared/services/cadastro.service';
 
 const MODULES = [
   CommonModule,
   ReactiveFormsModule
 ];
 
+const COMPONENTS = [
+  ButtonComponent,
+  RadioOptionComponent,
+  ExperienceLevelComponent
+];
+
 @Component({
   selector: 'app-cadastro-form',
   standalone: true,
   imports: [
-    ...MODULES
+    ...MODULES,
+    ...COMPONENTS
   ],
   templateUrl: './cadastro-form.component.html',
   styleUrls: ['./cadastro-form.component.scss']
 })
-export class CadastroFormComponent {
+export class CadastroFormComponent implements OnInit {
   cadastroForm!: FormGroup;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private cadastroService: CadastroService) { }
 
   areasAtuacao = [
     { id: 'ti', value: 'ti', label: 'TI e Programação' },
@@ -45,4 +62,34 @@ export class CadastroFormComponent {
       description: '(6 anos ou mais)'
     }
   ];
+
+  ngOnInit(): void {
+    this.cadastroForm = this.fb.group({
+      areasAtuacao: ['', Validators.required],
+      niveisExperiencia: ['', Validators.required]
+    });
+  }
+
+  onAreaChange(area: string) {
+    this.cadastroForm.get("areasAtuacao")?.setValue(area);
+  }
+
+  onNivelChange(nivel: string) {
+    this.cadastroForm.get("niveisExperiencia")?.setValue(nivel);
+  }
+
+  onAnterior() {
+    console.log("Voltar para etapa anterior");
+  }
+
+  onProximo() {
+    if (this.cadastroForm.valid) {
+      this.cadastroService.updateCadastroData({
+        areaAtuacao: this.cadastroForm.get("areaAtuacao")?.value,
+        nivelExperiencia: this.cadastroForm.get("niveisExperiencia")?.value
+      });
+
+      this.router.navigate(["/cadasto/dados-pessoais"]);
+    }
+  }
 }

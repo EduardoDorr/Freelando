@@ -14,6 +14,7 @@ const COMPONENTS = [
 ];
 
 const MODULES = [
+  RouterOutlet,
   ReactiveFormsModule
 ];
 
