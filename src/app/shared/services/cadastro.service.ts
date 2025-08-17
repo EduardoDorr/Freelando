@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Habilidade } from '../models/habilidade.interface';
+import { Idioma } from '../models/idioma.interface';
 
 interface CadastroData {
   areaAtuacao?: string,
   nivelExperiencia?: string,
-  noemCompleto?: string,
+  nomeCompleto?: string,
   estado?: string,
   cidade?: string,
   email?: string,
-  senha?: string
+  senha?: string,
+  foto?: string | ArrayBuffer | null,
+  resumo?: string,
+  habilidadeSelecionadas?: Array<Habilidade>,
+  idiomas?: Array<Idioma>,
+  portfolio?: string,
+  linkedin?: string
 }
-
 
 @Injectable({
   providedIn: 'root'

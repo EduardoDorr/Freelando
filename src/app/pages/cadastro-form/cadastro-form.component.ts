@@ -89,7 +89,7 @@ export class CadastroFormComponent implements OnInit {
         nivelExperiencia: this.cadastroForm.get("niveisExperiencia")?.value
       });
 
-      this.router.navigate(["/cadasto/dados-pessoais"]);
+      this.router.navigate(["cadastro/dados-pessoais"]);
     }
   }
 }
